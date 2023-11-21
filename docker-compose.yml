@@ -1,0 +1,9 @@
+services:
+  app:
+    build: .
+    command: uvicorn densechat_api.api:app --host 0.0.0.0 --port 8000 --reload
+    volumes:
+      - ./densechat_api:/code/densechat_api
+    ports:
+      - 8000:8000
+    restart: unless-stopped

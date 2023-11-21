@@ -1,0 +1,56 @@
+[tool.poetry]
+name = "densechat-api"
+version = "0.1.0"
+description = "An AI Rest API: https://densechat.ai"
+authors = ["Dense Analysis <developer@denseanalysis.org>"]
+
+[build-system]
+requires = ["poetry-core>=1.8.1"]
+build-backend = "poetry.core.masonry.api"
+
+# Base and Production-bound dependencies
+[tool.poetry.dependencies]
+python = "^3.11"
+# The API libray itself.
+fastapi = "^0.104.1"
+# Needed for running FastAPI via ASGI.
+uvicorn = {extras = ["standard"], version = "^0.22.0"}
+# requests will be needed to contact other APIs.
+requests = "^2.31.0"
+
+# Dependencies just for developer machines and CI.
+[tool.poetry.dev-dependencies]
+# pytest and useful pytest libraries and tools.
+pytest = "^7.4.0"
+pytest-cov = "4.1.0"
+pytest-mock = "3.11.1"
+pytest-asyncio = "0.21.0"
+requests-mock = "^1.7.0"
+# Linting and fixing code.
+flake8 = "6.0.0"
+isort = "5.12.0"
+flake8-isort = "6.1.0"
+# Type checking.
+pyright = "1.1.335"
+
+# isort settings, for sorting imports.
+[tool.isort]
+multi_line_output = 3
+known_first_party = "densechat_api"
+skip = "migrations,.venv,typings"
+
+# Settings for type checking.
+[tool.pyright]
+venvPath = "./"
+venv = ".venv"
+pythonVersion = "3.11"
+reportMissingModuleSource = "error"
+typeCheckingMode = "strict"
+
+# Settings for pytest
+[tool.pytest]
+addopts = "--tb=short -vv"
+filterwarnings = [
+    # Report unhandled async code errors.
+    "error::pytest.PytestUnhandledCoroutineWarning",
+]

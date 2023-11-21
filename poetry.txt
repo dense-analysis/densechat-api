@@ -1,0 +1,2 @@
+# Install this file outside of virtualenv to set up poetry.
+poetry>=1.7.0

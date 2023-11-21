@@ -1,0 +1,38 @@
+---
+name: CI
+
+on:  # yamllint disable-line rule:truthy
+  push:
+    paths-ignore:
+      - README.md
+      - LICENSE
+    branches:
+      - '**'
+
+jobs:
+  test:
+    name: Run Tests
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+        with:
+          lfs: true
+      - name: Run tests
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.11'
+          cache: 'pip'
+      # Install poetry first, no virtualenv.
+      - run: pip install -r poetry.txt
+      - run: poetry config virtualenvs.create false
+      # Install dependencies with poetry.
+      - run: poetry install
+      - name: Run pytest
+        run: pytest
+      - name: Run Pyright
+        if: success() || failure()
+        run: pyright
+      - name: Run flake8
+        if: success() || failure()
+        run: flake8
